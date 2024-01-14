@@ -45,7 +45,7 @@ public class RoundRobinLoadBalancer implements ReactorServiceInstanceLoadBalance
 	final AtomicInteger position;
 
 	final String serviceId;
-
+	// org.springframework.cloud.context.named.ClientFactoryObjectProvider@b386a17
 	ObjectProvider<ServiceInstanceListSupplier> serviceInstanceListSupplierProvider;
 
 	/**
@@ -77,6 +77,7 @@ public class RoundRobinLoadBalancer implements ReactorServiceInstanceLoadBalance
 	// https://github.com/Netflix/ocelli/blob/master/ocelli-core/
 	// src/main/java/netflix/ocelli/loadbalancer/RoundRobinLoadBalancer.java
 	public Mono<Response<ServiceInstance>> choose(Request request) {
+		// supplier=DiscoveryClientServiceInstanceListSupplier
 		ServiceInstanceListSupplier supplier = serviceInstanceListSupplierProvider
 				.getIfAvailable(NoopServiceInstanceListSupplier::new);
 		return supplier.get(request).next()

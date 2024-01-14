@@ -56,7 +56,7 @@ import static org.springframework.cloud.client.loadbalancer.reactive.ReactiveLoa
  * @author Olga Maciaszek-Sharma
  * @since 2.2.0
  */
-@SuppressWarnings({ "unchecked", "rawtypes" })
+@SuppressWarnings({"unchecked", "rawtypes"})
 public class BlockingLoadBalancerClient implements LoadBalancerClient {
 
 	private final ReactiveLoadBalancer.Factory<ServiceInstance> loadBalancerClientFactory;
@@ -67,7 +67,7 @@ public class BlockingLoadBalancerClient implements LoadBalancerClient {
 	 */
 	@Deprecated
 	public BlockingLoadBalancerClient(LoadBalancerClientFactory loadBalancerClientFactory,
-			LoadBalancerProperties properties) {
+									  LoadBalancerProperties properties) {
 		this.loadBalancerClientFactory = loadBalancerClientFactory;
 	}
 
@@ -121,13 +121,11 @@ public class BlockingLoadBalancerClient implements LoadBalancerClient {
 					.forEach(lifecycle -> lifecycle.onComplete(new CompletionContext<>(CompletionContext.Status.SUCCESS,
 							lbRequest, defaultResponse, clientResponse)));
 			return response;
-		}
-		catch (IOException iOException) {
+		} catch (IOException iOException) {
 			supportedLifecycleProcessors.forEach(lifecycle -> lifecycle.onComplete(
 					new CompletionContext<>(CompletionContext.Status.FAILED, iOException, lbRequest, defaultResponse)));
 			throw iOException;
-		}
-		catch (Exception exception) {
+		} catch (Exception exception) {
 			supportedLifecycleProcessors.forEach(lifecycle -> lifecycle.onComplete(
 					new CompletionContext<>(CompletionContext.Status.FAILED, exception, lbRequest, defaultResponse)));
 			ReflectionUtils.rethrowRuntimeException(exception);
@@ -146,8 +144,7 @@ public class BlockingLoadBalancerClient implements LoadBalancerClient {
 					return new ResponseData(null, clientHttpResponse);
 				}
 				return new ResponseData(clientHttpResponse, null);
-			}
-			catch (IOException ignored) {
+			} catch (IOException ignored) {
 			}
 		}
 		return response;
@@ -171,7 +168,7 @@ public class BlockingLoadBalancerClient implements LoadBalancerClient {
 
 	@Override
 	public <T> ServiceInstance choose(String serviceId, Request<T> request) {
-		ReactiveLoadBalancer<ServiceInstance> loadBalancer = loadBalancerClientFactory.getInstance(serviceId);
+		ReactiveLoadBalancer<ServiceInstance> loadBalancer = loadBalancerClientFactory.getInstance(serviceId); // 找到服务的负载均衡策略
 		if (loadBalancer == null) {
 			return null;
 		}
