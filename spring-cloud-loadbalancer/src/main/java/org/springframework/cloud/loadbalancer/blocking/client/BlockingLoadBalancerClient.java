@@ -57,7 +57,7 @@ import static org.springframework.cloud.client.loadbalancer.reactive.ReactiveLoa
  */
 @SuppressWarnings({ "unchecked", "rawtypes" })
 public class BlockingLoadBalancerClient implements LoadBalancerClient {
-
+	// org.springframework.cloud.loadbalancer.support.LoadBalancerClientFactory@6f13ed1
 	private final ReactiveLoadBalancer.Factory<ServiceInstance> loadBalancerClientFactory;
 
 	public BlockingLoadBalancerClient(ReactiveLoadBalancer.Factory<ServiceInstance> loadBalancerClientFactory) {
@@ -156,7 +156,7 @@ public class BlockingLoadBalancerClient implements LoadBalancerClient {
 
 	@Override
 	public <T> ServiceInstance choose(String serviceId, Request<T> request) {
-		ReactiveLoadBalancer<ServiceInstance> loadBalancer = loadBalancerClientFactory.getInstance(serviceId);
+		ReactiveLoadBalancer<ServiceInstance> loadBalancer = loadBalancerClientFactory.getInstance(serviceId); // 举例：com.ihuman.warmup.loadbalancer.WarmUpLoadBalancer
 		if (loadBalancer == null) {
 			return null;
 		}

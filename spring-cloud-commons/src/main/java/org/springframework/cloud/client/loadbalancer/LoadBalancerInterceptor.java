@@ -53,7 +53,7 @@ public class LoadBalancerInterceptor implements ClientHttpRequestInterceptor {
 		final URI originalUri = request.getURI();
 		String serviceName = originalUri.getHost();
 		Assert.state(serviceName != null, "Request URI does not contain a valid hostname: " + originalUri);
-		return this.loadBalancer.execute(serviceName, this.requestFactory.createRequest(request, body, execution));
+		return this.loadBalancer.execute(serviceName, this.requestFactory.createRequest(request, body, execution)); // BlockingLoadBalancerClient
 	}
 
 }

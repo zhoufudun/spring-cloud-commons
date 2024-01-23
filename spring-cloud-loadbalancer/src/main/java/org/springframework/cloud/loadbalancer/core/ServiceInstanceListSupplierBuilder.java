@@ -69,6 +69,7 @@ public final class ServiceInstanceListSupplierBuilder {
 	 * Sets a blocking {@link DiscoveryClient}-based
 	 * {@link DiscoveryClientServiceInstanceListSupplier} as a base
 	 * {@link ServiceInstanceListSupplier} in the hierarchy.
+	 *
 	 * @return the {@link ServiceInstanceListSupplierBuilder} object
 	 */
 	public ServiceInstanceListSupplierBuilder withBlockingDiscoveryClient() {
@@ -87,6 +88,7 @@ public final class ServiceInstanceListSupplierBuilder {
 	 * Sets a {@link ReactiveDiscoveryClient}-based
 	 * {@link DiscoveryClientServiceInstanceListSupplier} as a base
 	 * {@link ServiceInstanceListSupplier} in the hierarchy.
+	 *
 	 * @return the {@link ServiceInstanceListSupplierBuilder} object
 	 */
 	public ServiceInstanceListSupplierBuilder withDiscoveryClient() {
@@ -104,6 +106,7 @@ public final class ServiceInstanceListSupplierBuilder {
 	/**
 	 * Sets a user-provided {@link ServiceInstanceListSupplier} as a base
 	 * {@link ServiceInstanceListSupplier} in the hierarchy.
+	 *
 	 * @param supplier a user-provided {@link ServiceInstanceListSupplier} instance
 	 * @return the {@link ServiceInstanceListSupplierBuilder} object
 	 */
@@ -115,6 +118,7 @@ public final class ServiceInstanceListSupplierBuilder {
 	/**
 	 * Adds a {@link WeightedServiceInstanceListSupplier} to the
 	 * {@link ServiceInstanceListSupplier} hierarchy.
+	 *
 	 * @return the {@link ServiceInstanceListSupplierBuilder} object
 	 */
 	public ServiceInstanceListSupplierBuilder withWeighted() {
@@ -131,6 +135,7 @@ public final class ServiceInstanceListSupplierBuilder {
 	 * Adds a {@link WeightedServiceInstanceListSupplier} that uses user-provided
 	 * {@link WeightFunction} instance to the {@link ServiceInstanceListSupplier}
 	 * hierarchy.
+	 *
 	 * @param weightFunction a user-provided {@link WeightFunction} instance
 	 * @return the {@link ServiceInstanceListSupplierBuilder} object
 	 */
@@ -147,6 +152,7 @@ public final class ServiceInstanceListSupplierBuilder {
 	/**
 	 * Adds a {@link HealthCheckServiceInstanceListSupplier} to the
 	 * {@link ServiceInstanceListSupplier} hierarchy.
+	 *
 	 * @return the {@link ServiceInstanceListSupplierBuilder} object
 	 */
 	public ServiceInstanceListSupplierBuilder withHealthChecks() {
@@ -163,6 +169,7 @@ public final class ServiceInstanceListSupplierBuilder {
 	/**
 	 * Adds a {@link HealthCheckServiceInstanceListSupplier} that uses user-provided
 	 * {@link WebClient} instance to the {@link ServiceInstanceListSupplier} hierarchy.
+	 *
 	 * @param webClient a user-provided {@link WebClient} instance
 	 * @return the {@link ServiceInstanceListSupplierBuilder} object
 	 */
@@ -178,6 +185,7 @@ public final class ServiceInstanceListSupplierBuilder {
 	/**
 	 * Adds a {@link SameInstancePreferenceServiceInstanceListSupplier} to the
 	 * {@link ServiceInstanceListSupplier} hierarchy.
+	 *
 	 * @return the {@link ServiceInstanceListSupplierBuilder} object
 	 */
 	public ServiceInstanceListSupplierBuilder withSameInstancePreference() {
@@ -192,6 +200,7 @@ public final class ServiceInstanceListSupplierBuilder {
 	/**
 	 * Adds a {@link HealthCheckServiceInstanceListSupplier} that uses user-provided
 	 * {@link RestTemplate} instance to the {@link ServiceInstanceListSupplier} hierarchy.
+	 *
 	 * @return the {@link ServiceInstanceListSupplierBuilder} object
 	 */
 	public ServiceInstanceListSupplierBuilder withBlockingHealthChecks() {
@@ -207,6 +216,7 @@ public final class ServiceInstanceListSupplierBuilder {
 	/**
 	 * Adds a {@link HealthCheckServiceInstanceListSupplier} that uses user-provided
 	 * {@link RestClient} instance to the {@link ServiceInstanceListSupplier} hierarchy.
+	 *
 	 * @return the {@link ServiceInstanceListSupplierBuilder} object
 	 */
 	public ServiceInstanceListSupplierBuilder withBlockingRestClientHealthChecks() {
@@ -222,6 +232,7 @@ public final class ServiceInstanceListSupplierBuilder {
 	/**
 	 * Adds a {@link HealthCheckServiceInstanceListSupplier} that uses user-provided
 	 * {@link RestTemplate} instance to the {@link ServiceInstanceListSupplier} hierarchy.
+	 *
 	 * @param restTemplate a user-provided {@link RestTemplate} instance
 	 * @return the {@link ServiceInstanceListSupplierBuilder} object
 	 */
@@ -237,6 +248,7 @@ public final class ServiceInstanceListSupplierBuilder {
 	/**
 	 * Adds a {@link HealthCheckServiceInstanceListSupplier} that uses user-provided
 	 * {@link RestClient} instance to the {@link ServiceInstanceListSupplier} hierarchy.
+	 *
 	 * @param restClient a user-provided {@link RestClient} instance
 	 * @return the {@link ServiceInstanceListSupplierBuilder} object
 	 */
@@ -252,6 +264,7 @@ public final class ServiceInstanceListSupplierBuilder {
 	/**
 	 * Adds a {@link ZonePreferenceServiceInstanceListSupplier} to the
 	 * {@link ServiceInstanceListSupplier} hierarchy.
+	 *
 	 * @return the {@link ServiceInstanceListSupplierBuilder} object
 	 */
 	public ServiceInstanceListSupplierBuilder withZonePreference() {
@@ -267,6 +280,7 @@ public final class ServiceInstanceListSupplierBuilder {
 	/**
 	 * Adds a {@link ZonePreferenceServiceInstanceListSupplier} to the
 	 * {@link ServiceInstanceListSupplier} hierarchy.
+	 *
 	 * @param zoneName desired zone for zone preference
 	 * @return the {@link ServiceInstanceListSupplierBuilder} object
 	 */
@@ -283,6 +297,7 @@ public final class ServiceInstanceListSupplierBuilder {
 	/**
 	 * Adds a {@link RequestBasedStickySessionServiceInstanceListSupplier} to the
 	 * {@link ServiceInstanceListSupplier} hierarchy.
+	 *
 	 * @return the {@link ServiceInstanceListSupplierBuilder} object
 	 */
 	public ServiceInstanceListSupplierBuilder withRequestBasedStickySession() {
@@ -300,6 +315,7 @@ public final class ServiceInstanceListSupplierBuilder {
 	 * {@link ServiceInstanceListSupplier} hierarchy to provide a caching mechanism for
 	 * service instances. Uses {@link ObjectProvider} to lazily resolve
 	 * {@link LoadBalancerCacheManager}.
+	 *
 	 * @return the {@link ServiceInstanceListSupplierBuilder} object
 	 */
 	public ServiceInstanceListSupplierBuilder withCaching() {
@@ -346,6 +362,7 @@ public final class ServiceInstanceListSupplierBuilder {
 	/**
 	 * Support {@link ServiceInstanceListSupplierBuilder} can be added to the expansion
 	 * implementation of {@link ServiceInstanceListSupplier} by this method.
+	 *
 	 * @param delegateCreator a {@link DelegateCreator} object
 	 * @return the {@link ServiceInstanceListSupplierBuilder} object
 	 */
@@ -358,6 +375,7 @@ public final class ServiceInstanceListSupplierBuilder {
 
 	/**
 	 * Builds the {@link ServiceInstanceListSupplier} hierarchy.
+	 *
 	 * @param context application context
 	 * @return a {@link ServiceInstanceListSupplier} instance on top of the delegate
 	 * hierarchy
@@ -375,8 +393,8 @@ public final class ServiceInstanceListSupplierBuilder {
 	}
 
 	private ServiceInstanceListSupplier healthCheckServiceInstanceListSupplier(WebClient webClient,
-			ServiceInstanceListSupplier delegate,
-			ReactiveLoadBalancer.Factory<ServiceInstance> loadBalancerClientFactory) {
+																			   ServiceInstanceListSupplier delegate,
+																			   ReactiveLoadBalancer.Factory<ServiceInstance> loadBalancerClientFactory) {
 		return new HealthCheckServiceInstanceListSupplier(delegate, loadBalancerClientFactory,
 				(serviceInstance, healthCheckPath) -> webClient.get()
 						.uri(UriComponentsBuilder.fromUriString(getUri(serviceInstance, healthCheckPath)).build()
@@ -386,8 +404,8 @@ public final class ServiceInstanceListSupplierBuilder {
 	}
 
 	private ServiceInstanceListSupplier blockingHealthCheckServiceInstanceListSupplier(RestTemplate restTemplate,
-			ServiceInstanceListSupplier delegate,
-			ReactiveLoadBalancer.Factory<ServiceInstance> loadBalancerClientFactory) {
+																					   ServiceInstanceListSupplier delegate,
+																					   ReactiveLoadBalancer.Factory<ServiceInstance> loadBalancerClientFactory) {
 		return new HealthCheckServiceInstanceListSupplier(delegate, loadBalancerClientFactory,
 				(serviceInstance, healthCheckPath) -> Mono.defer(() -> {
 					URI uri = UriComponentsBuilder.fromUriString(getUri(serviceInstance, healthCheckPath)).build()
@@ -395,15 +413,14 @@ public final class ServiceInstanceListSupplierBuilder {
 					try {
 						return Mono
 								.just(HttpStatus.OK.equals(restTemplate.getForEntity(uri, Void.class).getStatusCode()));
-					}
-					catch (Exception ignored) {
+					} catch (Exception ignored) {
 						return Mono.just(false);
 					}
 				}));
 	}
 
 	private ServiceInstanceListSupplier blockingHealthCheckServiceInstanceListSupplier(RestClient restClient,
-			ServiceInstanceListSupplier delegate, LoadBalancerClientFactory loadBalancerClientFactory) {
+																					   ServiceInstanceListSupplier delegate, LoadBalancerClientFactory loadBalancerClientFactory) {
 		return new HealthCheckServiceInstanceListSupplier(delegate, loadBalancerClientFactory,
 				(serviceInstance, healthCheckPath) -> Mono.defer(() -> {
 					URI uri = UriComponentsBuilder.fromUriString(getUri(serviceInstance, healthCheckPath)).build()
@@ -411,8 +428,7 @@ public final class ServiceInstanceListSupplierBuilder {
 					try {
 						return Mono.just(HttpStatus.OK
 								.equals(restClient.get().uri(uri).retrieve().toBodilessEntity().getStatusCode()));
-					}
-					catch (Exception ignored) {
+					} catch (Exception ignored) {
 						return Mono.just(false);
 					}
 				}));

@@ -83,7 +83,7 @@ public class LoadBalancerClientConfiguration {
 		@Bean
 		@ConditionalOnBean(ReactiveDiscoveryClient.class)
 		@ConditionalOnMissingBean
-		@Conditional(DefaultConfigurationCondition.class)
+		@Conditional(DefaultConfigurationCondition.class) // 更具条件生成服务实例提供者
 		public ServiceInstanceListSupplier discoveryClientServiceInstanceListSupplier(
 				ConfigurableApplicationContext context) {
 			return ServiceInstanceListSupplier.builder().withDiscoveryClient().withCaching().build(context);
@@ -92,7 +92,7 @@ public class LoadBalancerClientConfiguration {
 		@Bean
 		@ConditionalOnBean(ReactiveDiscoveryClient.class)
 		@ConditionalOnMissingBean
-		@Conditional(ZonePreferenceConfigurationCondition.class)
+		@Conditional(ZonePreferenceConfigurationCondition.class) // 更具条件生成服务实例提供者
 		public ServiceInstanceListSupplier zonePreferenceDiscoveryClientServiceInstanceListSupplier(
 				ConfigurableApplicationContext context) {
 			return ServiceInstanceListSupplier.builder().withDiscoveryClient().withCaching().withZonePreference()

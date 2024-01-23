@@ -32,6 +32,7 @@ import org.springframework.util.Assert;
 public abstract class DelegatingServiceInstanceListSupplier
 		implements ServiceInstanceListSupplier, SelectedInstanceCallback, InitializingBean, DisposableBean {
 
+	// org.springframework.cloud.loadbalancer.core.DiscoveryClientServiceInstanceListSupplier
 	protected final ServiceInstanceListSupplier delegate;
 
 	public DelegatingServiceInstanceListSupplier(ServiceInstanceListSupplier delegate) {

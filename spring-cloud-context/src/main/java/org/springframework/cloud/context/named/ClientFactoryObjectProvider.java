@@ -34,12 +34,16 @@ import org.springframework.lang.Nullable;
  */
 class ClientFactoryObjectProvider<T> implements ObjectProvider<T> {
 
+	// org.springframework.cloud.loadbalancer.support.LoadBalancerClientFactory
 	private final NamedContextFactory<?> clientFactory;
 
+	// ihuman-turl-service
 	private final String name;
 
+	// interface org.springframework.cloud.loadbalancer.core.ServiceInstanceListSupplier
 	private final Class<T> type;
 
+	// org.springframework.beans.factory.support.DefaultListableBeanFactory
 	private ObjectProvider<T> provider;
 
 	ClientFactoryObjectProvider(NamedContextFactory<?> clientFactory, String name, Class<T> type) {
