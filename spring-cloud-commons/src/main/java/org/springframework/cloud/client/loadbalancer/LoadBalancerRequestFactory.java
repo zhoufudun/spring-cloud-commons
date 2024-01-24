@@ -18,6 +18,7 @@ package org.springframework.cloud.client.loadbalancer;
 
 import java.util.List;
 
+import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.client.ClientHttpRequestExecution;
 import org.springframework.http.client.ClientHttpResponse;
@@ -49,17 +50,19 @@ public class LoadBalancerRequestFactory {
 	public LoadBalancerRequest<ClientHttpResponse> createRequest(
 			final HttpRequest request, final byte[] body,
 			final ClientHttpRequestExecution execution) {
-		return instance -> {
-			HttpRequest serviceRequest = new ServiceRequestWrapper(request, instance,
-					this.loadBalancer);
-			if (this.transformers != null) {
-				for (LoadBalancerRequestTransformer transformer : this.transformers) {
-					serviceRequest = transformer.transformRequest(serviceRequest,
-							instance);
-				}
-			}
-			return execution.execute(serviceRequest, body);
-		};
+		return new LoadBalancerRequest<ClientHttpResponse>() {
+            @Override
+            public ClientHttpResponse apply(ServiceInstance instance) throws Exception {
+                HttpRequest serviceRequest = new ServiceRequestWrapper(request, instance,
+                        LoadBalancerRequestFactory.this.loadBalancer);
+                if (LoadBalancerRequestFactory.this.transformers != null) {
+                    for (LoadBalancerRequestTransformer transformer : LoadBalancerRequestFactory.this.transformers) {
+                        serviceRequest = transformer.transformRequest(serviceRequest, instance);
+                    }
+                }
+                return execution.execute(serviceRequest, body);
+            }
+        };
 	}
 
 }
