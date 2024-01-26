@@ -33,9 +33,10 @@ import org.springframework.util.Assert;
  */
 public class LoadBalancerInterceptor implements ClientHttpRequestInterceptor {
 
+	// 对于使用了ribbon作为负载均衡器时，这里是：org.springframework.cloud.netflix.ribbon.RibbonLoadBalancerClient
 	private LoadBalancerClient loadBalancer;
 
-	private LoadBalancerRequestFactory requestFactory;
+	private LoadBalancerRequestFactory requestFactory; // LoadBalancerRequestFactory
 
 	public LoadBalancerInterceptor(LoadBalancerClient loadBalancer,
 								   LoadBalancerRequestFactory requestFactory) {

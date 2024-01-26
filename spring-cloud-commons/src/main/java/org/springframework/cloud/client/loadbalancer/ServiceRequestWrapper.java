@@ -31,6 +31,11 @@ public class ServiceRequestWrapper extends HttpRequestWrapper {
 
 	private final LoadBalancerClient loadBalancer;
 
+	/**
+	 * @param request   org.springframework.http.client.InterceptingClientHttpRequest
+	 * @param instance  RibbonServer{serviceId='nacos-user-service', server=10.2.40.18:8207, secure=false, metadata={preserved.register.source=SPRING_CLOUD}}
+	 * @param loadBalancer org.springframework.cloud.netflix.ribbon.RibbonLoadBalancerClient
+	 */
 	public ServiceRequestWrapper(HttpRequest request, ServiceInstance instance,
 			LoadBalancerClient loadBalancer) {
 		super(request);
@@ -40,6 +45,10 @@ public class ServiceRequestWrapper extends HttpRequestWrapper {
 
 	@Override
 	public URI getURI() {
+		/**
+		 * uri=http://10.2.40.18:8207/user/create
+		 *
+		 */
 		URI uri = this.loadBalancer.reconstructURI(this.instance, getRequest().getURI());
 		return uri;
 	}

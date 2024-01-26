@@ -41,6 +41,10 @@ import org.springframework.core.env.MapPropertySource;
  *
  * Ported from spring-cloud-netflix FeignClientFactory and SpringClientFactory
  *
+ * Spring Cloud 中它为了实现不同的微服务具有不同的配置，例如不同的FeignClient会使用不同的ApplicationContext，从各自的上下文中获取不同配置进行实例化。在什么场景下我们会需要这种机制呢？ 例如，认证服务是会高频访问的服务，它的客户端超时时间应该要设置的比较小；而报表服务因为涉及到大量的数据查询和统计，它的超时时间就应该设置的比较大
+ *
+ * 著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+ *
  * @param <C> specification
  * @author Spencer Gibb
  * @author Dave Syer

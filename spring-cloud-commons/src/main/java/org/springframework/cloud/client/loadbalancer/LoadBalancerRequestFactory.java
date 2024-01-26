@@ -29,7 +29,6 @@ import org.springframework.http.client.ClientHttpResponse;
  * to the intercepted {@link HttpRequest}.
  *
  * @author William Tran
- *
  */
 public class LoadBalancerRequestFactory {
 
@@ -38,7 +37,7 @@ public class LoadBalancerRequestFactory {
 	private List<LoadBalancerRequestTransformer> transformers;
 
 	public LoadBalancerRequestFactory(LoadBalancerClient loadBalancer,
-			List<LoadBalancerRequestTransformer> transformers) {
+									  List<LoadBalancerRequestTransformer> transformers) {
 		this.loadBalancer = loadBalancer;
 		this.transformers = transformers;
 	}
@@ -48,21 +47,27 @@ public class LoadBalancerRequestFactory {
 	}
 
 	public LoadBalancerRequest<ClientHttpResponse> createRequest(
-			final HttpRequest request, final byte[] body,
-			final ClientHttpRequestExecution execution) {
+			final HttpRequest request, // org.springframework.http.client.InterceptingClientHttpRequest@31154921
+			final byte[] body, // http请求body的字节数组
+			final ClientHttpRequestExecution execution) { // org.springframework.http.client.InterceptingClientHttpRequest$InterceptingRequestExecution@1b300a41
 		return new LoadBalancerRequest<ClientHttpResponse>() {
-            @Override
-            public ClientHttpResponse apply(ServiceInstance instance) throws Exception {
-                HttpRequest serviceRequest = new ServiceRequestWrapper(request, instance,
-                        LoadBalancerRequestFactory.this.loadBalancer);
-                if (LoadBalancerRequestFactory.this.transformers != null) {
-                    for (LoadBalancerRequestTransformer transformer : LoadBalancerRequestFactory.this.transformers) {
-                        serviceRequest = transformer.transformRequest(serviceRequest, instance);
-                    }
-                }
-                return execution.execute(serviceRequest, body);
-            }
-        };
+			/**
+			 *
+			 * @param instance:
+			 * RibbonServer{serviceId='nacos-user-service', server=10.2.40.18:8207, secure=false, metadata={preserved.register.source=SPRING_CLOUD}}
+			 */
+			@Override
+			public ClientHttpResponse apply(ServiceInstance instance) throws Exception {
+				HttpRequest serviceRequest = new ServiceRequestWrapper(request, instance, LoadBalancerRequestFactory.this.loadBalancer);
+				if (LoadBalancerRequestFactory.this.transformers != null) {
+					for (LoadBalancerRequestTransformer transformer : LoadBalancerRequestFactory.this.transformers) {
+						serviceRequest = transformer.transformRequest(serviceRequest, instance);
+					}
+				}
+				// 执行执行链中的下一个拦截器
+				return execution.execute(serviceRequest, body);
+			}
+		};
 	}
 
 }
