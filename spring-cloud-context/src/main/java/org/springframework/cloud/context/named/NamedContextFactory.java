@@ -38,11 +38,11 @@ import org.springframework.core.env.MapPropertySource;
 /**
  * Creates a set of child contexts that allows a set of Specifications to define the beans
  * in each child context.
- *
+ * <p>
  * Ported from spring-cloud-netflix FeignClientFactory and SpringClientFactory
- *
+ * <p>
  * Spring Cloud 中它为了实现不同的微服务具有不同的配置，例如不同的FeignClient会使用不同的ApplicationContext，从各自的上下文中获取不同配置进行实例化。在什么场景下我们会需要这种机制呢？ 例如，认证服务是会高频访问的服务，它的客户端超时时间应该要设置的比较小；而报表服务因为涉及到大量的数据查询和统计，它的超时时间就应该设置的比较大
- *
+ * <p>
  * 著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
  *
  * @param <C> specification
@@ -53,22 +53,44 @@ import org.springframework.core.env.MapPropertySource;
 public abstract class NamedContextFactory<C extends NamedContextFactory.Specification>
 		implements DisposableBean, ApplicationContextAware {
 
-	private final String propertySourceName;
+	private final String propertySourceName; // ribbon
 
-	private final String propertyName;
+	private final String propertyName; // ribbon.client.name
 
 	private Map<String, AnnotationConfigApplicationContext> contexts = new ConcurrentHashMap<>();
-
+	/**
+	 * 对于使用了Ribbon和Nacos情况下, 项目启动后，在第一次请求进来之前：
+	 * {
+	 * default.org.springframework.cloud.netflix.ribbon.RibbonAutoConfiguration=RibbonClientSpecification{name='default.org.springframework.cloud.netflix.ribbon.RibbonAutoConfiguration', configuration=[]},
+	 * default.com.alibaba.cloud.nacos.ribbon.RibbonNacosAutoConfiguration=RibbonClientSpecification{name='default.com.alibaba.cloud.nacos.ribbon.RibbonNacosAutoConfiguration', configuration=[class com.alibaba.cloud.nacos.ribbon.NacosRibbonClientConfiguration]}
+	 * }
+	 */
 	private Map<String, C> configurations = new ConcurrentHashMap<>();
 
+	/**
+	 * org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@1b5bc39d, started on Mon Jan 29 15:18:23 CST 2024, parent: org.springframework.context.annotation.AnnotationConfigApplicationContext@81d9a72
+	 */
 	private ApplicationContext parent;
 
+	/**
+	 * class org.springframework.cloud.netflix.ribbon.RibbonClientConfiguration
+	 */
 	private Class<?> defaultConfigType;
 
+	/**
+	 * 使用SpringClientFactory时
+	 *
+	 * @param defaultConfigType
+	 * @param propertySourceName
+	 * @param propertyName
+	 */
 	public NamedContextFactory(Class<?> defaultConfigType, String propertySourceName,
-			String propertyName) {
+							   String propertyName) {
+		// class org.springframework.cloud.netflix.ribbon.RibbonClientConfiguration
 		this.defaultConfigType = defaultConfigType;
+		// ribbon
 		this.propertySourceName = propertySourceName;
+		// ribbon.client.name
 		this.propertyName = propertyName;
 	}
 
@@ -109,11 +131,16 @@ public abstract class NamedContextFactory<C extends NamedContextFactory.Specific
 		return this.contexts.get(name);
 	}
 
+	/**
+	 * 每一个FeignClient创建一个对应的上下文
+	 *
+	 * @param name nacos-user-service
+	 * @return 注解类型的上下文
+	 */
 	protected AnnotationConfigApplicationContext createContext(String name) {
 		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
 		if (this.configurations.containsKey(name)) {
-			for (Class<?> configuration : this.configurations.get(name)
-					.getConfiguration()) {
+			for (Class<?> configuration : this.configurations.get(name).getConfiguration()) {
 				context.register(configuration);
 			}
 		}
@@ -124,25 +151,31 @@ public abstract class NamedContextFactory<C extends NamedContextFactory.Specific
 				}
 			}
 		}
-		context.register(PropertyPlaceholderAutoConfiguration.class,
-				this.defaultConfigType);
-		context.getEnvironment().getPropertySources().addFirst(new MapPropertySource(
-				this.propertySourceName,
-				Collections.<String, Object>singletonMap(this.propertyName, name)));
+		/**
+		 *  注册一些默认的配置类到上下文中，其中包括 PropertyPlaceholderAutoConfiguration
+		 */
+		context.register(PropertyPlaceholderAutoConfiguration.class, this.defaultConfigType);
+		/**
+		 * 向上下文的环境中添加属性源，这里创建了一个 MapPropertySource 用于存放属性值
+		 */
+		context.getEnvironment().getPropertySources().addFirst(new MapPropertySource(this.propertySourceName, Collections.<String, Object>singletonMap(this.propertyName, name)));
 		if (this.parent != null) {
+			// 如果存在父上下文，则将其设置为当前上下文的父上下文。这是为了让上下文能够共享环境和Bean。
 			// Uses Environment from parent as well as beans
 			context.setParent(this.parent);
 			// jdk11 issue
 			// https://github.com/spring-cloud/spring-cloud-netflix/issues/3101
 			context.setClassLoader(this.parent.getClassLoader());
 		}
+		// 设置上下文的显示名称，通过调用 generateDisplayName 方法生成
 		context.setDisplayName(generateDisplayName(name));
+		// 刷新上下文，使其准备好使用
 		context.refresh();
 		return context;
 	}
 
 	protected String generateDisplayName(String name) {
-		return this.getClass().getSimpleName() + "-" + name;
+		return this.getClass().getSimpleName() + "-" + name; // SpringClientFactory-nacos-user-service
 	}
 
 	public <T> T getInstance(String name, Class<T> type) {
